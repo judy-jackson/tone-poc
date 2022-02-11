@@ -18,7 +18,7 @@ For example, to compile and deploy the contract Melody.sol
 ```
 The script will print out the address of the new contract and save ABI and bytecode to the <file_dir> directory.
 
-Replace the value for [contract address](https://github.com/judy-jackson/tone-poc/blob/init_commit/src/App.svelte#L14) and [ABI](https://github.com/judy-jackson/tone-poc/blob/init_commit/src/App.svelte#L14) in the [App.svelte](/src/App.svelte) file.
+Replace the value for [contract address](https://github.com/judy-jackson/tone-poc/blob/init_commit/src/App.svelte#L14) and [ABI](https://github.com/judy-jackson/tone-poc/blob/init_commit/src/App.svelte#L13) in the [App.svelte](/src/App.svelte) file.
 
 Install the dependencies for the app.
 
