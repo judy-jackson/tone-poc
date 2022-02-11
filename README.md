@@ -31,5 +31,5 @@ Start by running
 npm run dev
 ```
 
-Navigate to [localhost:8080](http://localhost:8080). To play audio, press the "Play" button. To stop, press "Stop". Note: audio gen hasn't been optimized yet and is currently very slow. It will take some time before audio will begin to play.
+Navigate to [localhost:8080](http://localhost:8080). To play audio, press the "Play" button. To stop, press "Stop". Note: audio gen hasn't been optimized yet and is currently very slow. It will take some time before audio will begin to play: the button will display "Audio Loaded" when data has been loaded successfully.
 

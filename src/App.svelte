@@ -10,8 +10,9 @@
 
 	let provider = new ethers.providers.JsonRpcProvider();
 	let signer = provider.getSigner(0);
+	//replace abi code with compiler output
 	let abi = JSON.parse('[{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"createMelody","outputs":[{"internalType":"bytes","name":"","type":"bytes"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_freq","type":"uint256"},{"internalType":"uint256","name":"_dur","type":"uint256"}],"name":"genTone","outputs":[{"internalType":"bytes","name":"","type":"bytes"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"getNumTones","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getTone","outputs":[{"internalType":"bytes","name":"","type":"bytes"}],"stateMutability":"pure","type":"function"}]');
-	let contractId = '0xd91cdBc52fa6172d05fc600d5dA08a45B8f3ebd3';
+	let contractId = '0x2782E3E052b45c2C2E5326FBFE7bbDdB7d9f0A17'; //replace this with your ganache wallet
 	let contract = new ethers.Contract(contractId, abi, signer);
 
 	let audioCtx;
@@ -60,7 +61,6 @@
 
 		console.log("Length of byestrings array: " + byteStrings.length);
 		console.log("Arraybuffer len: " + buf.byteLength);
-		//return buf;
 		return bufView.buffer;
 	}
 
@@ -71,16 +71,15 @@
   		return tmp.buffer;
 	}
 
-	async function onClick() {
-		button_message = await loadMessage();
+	async function startAudio() {
+		//button_message = await loadMessage();
+		let raw_audio = await loadMessage();
 		let buf = await getArrayBuffer(button_message);
 		let concat = await concatBuffers(header_buffer, buf);
 		getAudio(concat);
-		//let blob = new Blob(button_message);
-		//let buf = blob.arrayBuffer();
+
 		console.log("Message loaded: " + Date.now());
-		//console.log("Type: " + typeof button_message + " Length: " + button_message.length);
-		//console.log("Type of concat obj: " + typeof concat + ", length: " + concat.byteLength);
+		button_message = "Play: Audio loaded.";
 		source.start(0);
 	}
 
@@ -88,8 +87,8 @@
 
 <main>
 	<h1>Hello {name}!</h1>
-	<button on:click={onClick}> A random number: {button_message}</button>
-	<button on:click={stopPlay}> Press stop! </button>
+	<button on:click={startAudio}> Play: {button_message}</button>
+	<button on:click={stopPlay}> Stop </button>
 
 </main>
 

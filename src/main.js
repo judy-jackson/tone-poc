@@ -5,7 +5,7 @@ const app = new App({
 	target: document.body,
 	props: {
 		name: 'ciabatta',
-		button_message: '12',
+		button_message: 'Not Loaded',
 		header_buffer: rawBuffer
 	}
 });

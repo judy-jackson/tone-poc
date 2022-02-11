@@ -9,6 +9,5 @@ for (var i=0; i<header_len; i++){
     arrayView[i] = parseInt(valueArray[i], 16);
 }
 
-//console.log("In header.js: " + rawBuffer.byteLength);
 export default rawBuffer;
 
