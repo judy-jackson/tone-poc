@@ -79,7 +79,7 @@
 		getAudio(concat);
 
 		console.log("Message loaded: " + Date.now());
-		button_message = "Play: Audio loaded.";
+		button_message = "Audio loaded.";
 		source.start(0);
 	}
 
