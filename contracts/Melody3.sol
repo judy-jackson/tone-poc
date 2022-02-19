@@ -25,8 +25,31 @@ contract MelodyGen{
         bytes sequence2;
     }
 
+    function random(string memory seed) internal pure returns (uint256){
+        return uint256(keccak256(abi.encodePacked(seed)));
+    }
+
+    function toString(uint256 value) internal pure returns (string memory){
+        if (value==0){
+            return "0";
+        }
+        uint256 temp = value;
+        uint256 digits = 0;
+        while (temp!=0){
+            digits++;
+            temp/=10;
+        }
+        bytes memory buffer = new bytes(digits);
+        while (value!=0) {
+            digits -= 1;
+            buffer[digits] = bytes1(uint8(48 + uint256(value % 10)));
+            value /= 10;
+        }
+        return string(buffer);
+    }
+
     function randomMelody(uint256 tokenId) internal view returns (MelodyObject memory){
-        MelodyObject memory melody;
+        //MelodyObject memory melody;
 
         uint256 len_s1 = getSequence1Length(tokenId);
         bytes memory sequence1 = new bytes(len_s1);
@@ -41,23 +64,58 @@ contract MelodyGen{
         return MelodyObject(len_s1, num_s1, len_s2, num_s2, tokenId, sequence1, sequence2);
     }
 
-    function getSequence1Length(uint256 tokenId ) internal pure returns (uint256){
+    function getSequence1Length(uint256 tokenId ) public pure returns (uint256){
+        uint256 rand = random(string(abi.encodePacked("SEQUENCE1LENGTH", toString(tokenId)))) % 170;
+        //uint256 s1_len = 0;
+        
+        if (rand < 64) { return 2; }
+        if (rand >= 64 && rand < 88) { return 4;}
+        if (rand > 88) { return 8; }
         return 4;
     }
 
-    function getSequence1(uint256 tokenId, uint256 len) internal view returns (bytes memory){
-        bytes memory sequence = abi.encodePacked(sequence_len_4_1);
-        return sequence;
-
+    function getSequence1(uint256 tokenId, uint256 len) public view returns (bytes memory){
+        uint256 rand = random(string(abi.encodePacked("SEQUENCE1LENGTH", toString(tokenId)))) % 500;
+        if (len==2){
+            if (rand < 200){ return abi.encodePacked(sequence_len_2_1); }
+            if (rand >= 200){ return abi.encodePacked(sequence_len_2_2); }
+        }
+        if (len==4){
+            if (rand < 200){ return abi.encodePacked(sequence_len_4_1); }
+            if (rand >= 200){ return abi.encodePacked(sequence_len_4_2); }
+        }
+        if (len==8){
+            if (rand < 200){ return abi.encodePacked(sequence_len_8_1); }
+            if (rand >= 200){ return abi.encodePacked(sequence_len_8_2); }
+        }
+        return abi.encodePacked(sequence_len_4_1);
     }
 
-    function getSequence2Length(uint256 tokenId ) internal pure returns (uint256){
-        return 8;
+    function getSequence2Length(uint256 tokenId ) public pure returns (uint256){
+        uint256 rand = random(string(abi.encodePacked("SEQUENCE2LENGTH", toString(tokenId)))) % 170;
+        //uint256 s1_len = 0;
+        
+        if (rand < 50) { return 2; }
+        if (rand >= 50 && rand < 98) { return 4;}
+        if (rand >= 98) { return 8; }
+        return 4;
     }
 
-    function getSequence2(uint256 tokenId, uint256 len) internal view returns (bytes memory){
-        bytes memory sequence = abi.encodePacked(sequence_len_8_1);
-        return sequence;
+    function getSequence2(uint256 tokenId, uint256 len) public view returns (bytes memory){
+        uint256 rand = random(string(abi.encodePacked("SEQUENCE1LENGTH", toString(tokenId)))) % 240;
+        if (len==2){
+            if (rand < 60){ return abi.encodePacked(sequence_len_2_1); }
+            if (rand >= 60){ return abi.encodePacked(sequence_len_2_2); }
+        }
+        if (len==4){
+            if (rand < 60){ return abi.encodePacked(sequence_len_4_1); }
+            if (rand >= 60){ return abi.encodePacked(sequence_len_4_2); }
+        }
+        if (len==8){
+            if (rand < 60){ return abi.encodePacked(sequence_len_8_1); }
+            if (rand >= 60){ return abi.encodePacked(sequence_len_8_2); }
+        }
+        return abi.encodePacked(sequence_len_4_1);
 
     }
 
