@@ -4,24 +4,18 @@
 	export let header_buffer;
 	export let contractIdExt;
 	export let abiString;
-
 	import {ethers} from 'ethers';
-
 	console.log("Header length: " + header_buffer.byteLength + ", type: " + typeof header_buffer);
 	console.log("Loading in contract: " + Date.now());
 	console.log("Contract ID: " + contractIdExt + " ABI: " + abiString);
-
 	let provider = new ethers.providers.JsonRpcProvider();
 	let signer = provider.getSigner(0);
 	let abi = JSON.parse(abiString);
 	let contractId = contractIdExt;
 	let contract = new ethers.Contract(contractId, abi, signer);
-
 	let audioCtx;
 	let source;
-
 	console.log("Contract loaded: " + Date.now());
-
 	function getAudio(audioData){
 		if(window.webkitAudioContext) {
     		audioCtx = new window.webkitAudioContext();
@@ -35,29 +29,24 @@
         source.connect(audioCtx.destination);
         source.loop = true;
       },
-
       function(e){"Error with decoding audio data" + e.error});
 	  
   }
-
   	async function concatBuffers(buf1, buf2){
 		var tmp = new Uint8Array(buf1.byteLength + buf2.byteLength);
   		tmp.set(new Uint8Array(buf1), 0);
   		tmp.set(new Uint8Array(buf2), buf1.byteLength);
   		return tmp.buffer;
 	}
-
   	function stopPlay() {
 		  console.log("Stop!");
 		  source.stop(0);
 	  }
-
 	async function loadMessage(){
 		console.log("Loading message: " + Date.now());
 		let message = await contract.getAudio();
 		return await message;
 	}
-
 	async function getArrayBuffer(str){
 		str = str.slice(2);
 		var byteStrings = str.match(/[\s\S]{1,2}/g) || [];
@@ -67,24 +56,20 @@
 		for (var i=0; i<bufLength; i++){
 			bufView[i] = parseInt(byteStrings[i], 16);
 		}
-
 		console.log("Length of byestrings array: " + byteStrings.length);
 		console.log("Arraybuffer len: " + buf.byteLength);
 		return bufView.buffer;
 	}
-
 	async function startAudio() {
 		//button_message = await loadMessage();
 		let raw_audio = await loadMessage();
 		let buf = await getArrayBuffer(raw_audio);
 		let concat = await concatBuffers(header_buffer, buf);
 		getAudio(concat);
-
 		console.log("Message loaded: " + Date.now());
 		button_message = "Audio loaded.";
 		source.start(0);
 	}
-
 </script>
 
 <main>
@@ -101,14 +86,12 @@
 		max-width: 240px;
 		margin: 0 auto;
 	}
-
 	h1 {
 		color: #ff3e00;
 		text-transform: uppercase;
 		font-size: 4em;
 		font-weight: 100;
 	}
-
 	@media (min-width: 640px) {
 		main {
 			max-width: none;
