@@ -16,6 +16,7 @@
 	let audioCtx;
 	let source;
 	console.log("Contract loaded: " + Date.now());
+
 	function getAudio(audioData){
 		if(window.webkitAudioContext) {
     		audioCtx = new window.webkitAudioContext();
@@ -44,7 +45,7 @@
 	  }
 	async function loadMessage(){
 		console.log("Loading message: " + Date.now());
-		let message = await contract.getAudio();
+		let message = await contract.tokenUri(7);
 		return await message;
 	}
 	async function getArrayBuffer(str){

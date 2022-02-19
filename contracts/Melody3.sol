@@ -18,9 +18,10 @@ contract MelodyGen{
     struct MelodyObject {
         uint256 sequence1_len;
         uint256 num_sequence1;
+
         uint256 sequence2_len;
         uint256 num_sequence2;
-        uint256 tokenId;
+        
         bytes sequence1;
         bytes sequence2;
     }
@@ -49,7 +50,6 @@ contract MelodyGen{
     }
 
     function randomMelody(uint256 tokenId) internal view returns (MelodyObject memory){
-        //MelodyObject memory melody;
 
         uint256 len_s1 = getSequence1Length(tokenId);
         bytes memory sequence1 = new bytes(len_s1);
@@ -61,12 +61,11 @@ contract MelodyGen{
         sequence2 = getSequence2(tokenId, len_s2);
         uint256 num_s2 = 64;
 
-        return MelodyObject(len_s1, num_s1, len_s2, num_s2, tokenId, sequence1, sequence2);
+        return MelodyObject(len_s1, num_s1, len_s2, num_s2, sequence1, sequence2);
     }
 
     function getSequence1Length(uint256 tokenId ) public pure returns (uint256){
         uint256 rand = random(string(abi.encodePacked("SEQUENCE1LENGTH", toString(tokenId)))) % 170;
-        //uint256 s1_len = 0;
         
         if (rand < 64) { return 2; }
         if (rand >= 64 && rand < 88) { return 4;}
@@ -93,7 +92,6 @@ contract MelodyGen{
 
     function getSequence2Length(uint256 tokenId ) public pure returns (uint256){
         uint256 rand = random(string(abi.encodePacked("SEQUENCE2LENGTH", toString(tokenId)))) % 170;
-        //uint256 s1_len = 0;
         
         if (rand < 50) { return 2; }
         if (rand >= 50 && rand < 98) { return 4;}
@@ -124,9 +122,7 @@ contract MelodyGen{
         return getAudio(melody);
     }
 
-    function getAudio(MelodyObject memory melody) internal view returns (bytes memory){
-        //get sequence, num sequence, sequence length
-            uint tokenId = melody.tokenId;
+    function getAudio(MelodyObject memory melody) internal pure returns (bytes memory){
             uint sequence1_len = melody.sequence1_len;
             uint num_sequence1 = melody.num_sequence1;
 
