@@ -2,23 +2,25 @@
 	export let name;
 	export let button_message;
 	export let header_buffer;
+	export let contractIdExt;
+	export let abiString;
 
 	import {ethers} from 'ethers';
 
 	console.log("Header length: " + header_buffer.byteLength + ", type: " + typeof header_buffer);
 	console.log("Loading in contract: " + Date.now());
+	console.log("Contract ID: " + contractIdExt + " ABI: " + abiString);
 
 	let provider = new ethers.providers.JsonRpcProvider();
 	let signer = provider.getSigner(0);
-	//replace abi code with compiler output
-	let abi = JSON.parse('[{"inputs":[],"name":"getAudio","outputs":[{"internalType":"bytes","name":"","type":"bytes"}],"stateMutability":"pure","type":"function"}]');
-	let contractId = '0xB46E998ad2B9c6fE179fd04f7e88D20341510b93'; //replace this with your contract id
+	let abi = JSON.parse(abiString);
+	let contractId = contractIdExt;
 	let contract = new ethers.Contract(contractId, abi, signer);
 
 	let audioCtx;
 	let source;
 
-	console.log("Contract loaded" + Date.now());
+	console.log("Contract loaded: " + Date.now());
 
 	function getAudio(audioData){
 		if(window.webkitAudioContext) {
