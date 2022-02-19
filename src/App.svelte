@@ -11,8 +11,8 @@
 	let provider = new ethers.providers.JsonRpcProvider();
 	let signer = provider.getSigner(0);
 	//replace abi code with compiler output
-	let abi = JSON.parse('[{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"createMelody","outputs":[{"internalType":"bytes","name":"","type":"bytes"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_freq","type":"uint256"},{"internalType":"uint256","name":"_dur","type":"uint256"}],"name":"genTone","outputs":[{"internalType":"bytes","name":"","type":"bytes"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"getNumTones","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getTone","outputs":[{"internalType":"bytes","name":"","type":"bytes"}],"stateMutability":"pure","type":"function"}]');
-	let contractId = '0x2782E3E052b45c2C2E5326FBFE7bbDdB7d9f0A17'; //replace this with your ganache wallet
+	let abi = JSON.parse('[{"inputs":[],"name":"getAudio","outputs":[{"internalType":"bytes","name":"","type":"bytes"}],"stateMutability":"pure","type":"function"}]');
+	let contractId = '0xB46E998ad2B9c6fE179fd04f7e88D20341510b93'; //replace this with your contract id
 	let contract = new ethers.Contract(contractId, abi, signer);
 
 	let audioCtx;
@@ -38,6 +38,13 @@
 	  
   }
 
+  	async function concatBuffers(buf1, buf2){
+		var tmp = new Uint8Array(buf1.byteLength + buf2.byteLength);
+  		tmp.set(new Uint8Array(buf1), 0);
+  		tmp.set(new Uint8Array(buf2), buf1.byteLength);
+  		return tmp.buffer;
+	}
+
   	function stopPlay() {
 		  console.log("Stop!");
 		  source.stop(0);
@@ -45,7 +52,7 @@
 
 	async function loadMessage(){
 		console.log("Loading message: " + Date.now());
-		let message = await contract.createMelody();
+		let message = await contract.getAudio();
 		return await message;
 	}
 
@@ -64,17 +71,10 @@
 		return bufView.buffer;
 	}
 
-	async function concatBuffers(buf1, buf2){
-		var tmp = new Uint8Array(buf1.byteLength + buf2.byteLength);
-  		tmp.set(new Uint8Array(buf1), 0);
-  		tmp.set(new Uint8Array(buf2), buf1.byteLength);
-  		return tmp.buffer;
-	}
-
 	async function startAudio() {
 		//button_message = await loadMessage();
 		let raw_audio = await loadMessage();
-		let buf = await getArrayBuffer(button_message);
+		let buf = await getArrayBuffer(raw_audio);
 		let concat = await concatBuffers(header_buffer, buf);
 		getAudio(concat);
 
