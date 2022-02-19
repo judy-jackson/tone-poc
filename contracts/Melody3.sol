@@ -25,7 +25,7 @@ contract MelodyGen{
         bytes sequence2;
     }
 
-    function randomMelody(uint256 tokenId) public view returns (MelodyObject memory){
+    function randomMelody(uint256 tokenId) internal view returns (MelodyObject memory){
         MelodyObject memory melody;
 
         uint256 len_s1 = getSequence1Length(tokenId);
@@ -41,21 +41,21 @@ contract MelodyGen{
         return MelodyObject(len_s1, num_s1, len_s2, num_s2, tokenId, sequence1, sequence2);
     }
 
-    function getSequence1Length(uint256 tokenId ) public pure returns (uint256){
+    function getSequence1Length(uint256 tokenId ) internal pure returns (uint256){
         return 4;
     }
 
-    function getSequence1(uint256 tokenId, uint256 len) public view returns (bytes memory){
+    function getSequence1(uint256 tokenId, uint256 len) internal view returns (bytes memory){
         bytes memory sequence = abi.encodePacked(sequence_len_4_1);
         return sequence;
 
     }
 
-    function getSequence2Length(uint256 tokenId ) public pure returns (uint256){
+    function getSequence2Length(uint256 tokenId ) internal pure returns (uint256){
         return 8;
     }
 
-    function getSequence2(uint256 tokenId, uint256 len) public view returns (bytes memory){
+    function getSequence2(uint256 tokenId, uint256 len) internal view returns (bytes memory){
         bytes memory sequence = abi.encodePacked(sequence_len_8_1);
         return sequence;
 
@@ -90,8 +90,6 @@ contract MelodyGen{
             for (uint i=0; i<num_sequence2; i++){
                 audio_bytes = abi.encodePacked(audio_bytes, sequence2);
             }
-
-            
 
         return audio_bytes;
     }
